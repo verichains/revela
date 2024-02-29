@@ -13708,6 +13708,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "revela"
+version = "1.0.0"
+dependencies = [
+ "anyhow",
+ "aptos-framework",
+ "clap 3.2.25",
+ "codespan",
+ "datatest-stable",
+ "itertools 0.10.5",
+ "move-binary-format",
+ "move-bytecode-source-map",
+ "move-command-line-common",
+ "move-compiler",
+ "move-core-types",
+ "move-ir-types",
+ "move-model",
+ "move-stackless-bytecode",
+ "move-symbol-pool",
+ "uuid",
+]
+
+[[package]]
 name = "rfc6979"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
