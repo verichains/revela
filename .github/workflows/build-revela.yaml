@@ -1,0 +1,64 @@
+name: "Build revela"
+
+on:
+  push:
+    branches:
+      - test
+    tags:
+      - 'v[0-9]+.*'
+
+permissions: {} # none
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        target:
+        - x86_64-pc-windows-gnu
+        - x86_64-apple-darwin
+        - aarch64-apple-darwin
+        - x86_64-unknown-linux-gnu
+        - aarch64-unknown-linux-gnu
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1000
+
+      - name: Build
+        uses: "verichains/revela/.github/actions/build-revela@test"
+        with:
+          target: ${{ matrix.target }}
+          release_dir: "/tmp/revela-release"
+    
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: revela-${{matrix.target}}
+          path: |
+              /tmp/revela-release/revela-*
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/revela-release
+      
+      - name: Create Release
+        uses: "softprops/action-gh-release@v1"
+        with:
+          files: /tmp/revela-release/**/revela-*
+          fail_on_unmatched_files: true
+          tag_name: ${{ github.ref }}
+          body: ${{ github.ref }}
+          draft: false
+          prerelease: ${{ contains(github.ref, '-') }}

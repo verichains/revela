@@ -1,0 +1,35 @@
+name: "Build revela"
+description: "Build Revela"
+
+inputs:
+  target:
+    description: "The target to build for"
+    required: true
+  release_dir:
+    description: "The directory to store the release"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Setup MacSDK
+      if: inputs.target == 'x86_64-apple-darwin' || inputs.target == 'aarch64-apple-darwin'
+      run: |
+        mkdir -p /tmp/macsdk
+        bash "${{github.action_path}}/setup-mac-sdk.sh" -v 13.3 -c e5d0f958a079106234b3a840f93653308a76d3dcea02d3aa8f2841f8df33050c -i /tmp/macsdk
+        echo "SDKROOT=/tmp/macsdk/MacOSX13.3.sdk" >> $GITHUB_ENV
+      shell: bash
+    
+    - name: Build
+      run: |
+        export RELEASE_DIR=${{inputs.release_dir}}
+        export SDKROOT=${{env.SDKROOT}}
+        mkdir -p $RELEASE_DIR
+        bash "${{github.action_path}}/build.sh" -t ${{inputs.target}}
+      shell: bash
