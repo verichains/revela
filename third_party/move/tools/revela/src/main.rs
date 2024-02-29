@@ -6,7 +6,7 @@
 
 use std::fs;
 
-use clap::Parser;
+use clap::{AppSettings, Parser};
 
 use move_binary_format::{
     binary_views::BinaryIndexedView,
@@ -14,6 +14,7 @@ use move_binary_format::{
 };
 use revela::decompiler::{Decompiler, OptimizerSettings};
 #[derive(Debug, Parser)]
+#[clap(setting = AppSettings::ArgRequiredElseHelp)]
 #[clap(version, about = "Decompile Move bytecode back to source code. By verichains.io", name = "revela")]
 struct Args {
     /// Treat input file as a script (default is to treat file as a module)
