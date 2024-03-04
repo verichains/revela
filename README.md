@@ -1,27 +1,62 @@
-<a href="https://aptos.dev">
-	<img width="100%" src="./.assets/aptos_banner.png" alt="Aptos Banner" />
-</a>
+<p align="center">
+<img width="360" src="images/revela.png">
+</p>
 
----
+**Revela Decompiler** is a tool to decompile Move smart contracts from low-level bytecode form back to high-level source code.
 
-[![License](https://img.shields.io/badge/license-Apache-green.svg)](LICENSE)
-[![Lint+Test](https://github.com/aptos-labs/aptos-core/actions/workflows/lint-test.yaml/badge.svg)](https://github.com/aptos-labs/aptos-core/actions/workflows/lint-test.yaml)
-[![codecov](https://codecov.io/gh/aptos-labs/aptos-core/branch/main/graph/badge.svg?token=X01RKXSGDE)](https://codecov.io/gh/aptos-labs/aptos-core)
-[![Discord chat](https://img.shields.io/discord/945856774056083548?style=flat-square)](https://discord.gg/aptosnetwork)
+Revela is also available online at [revela.verichains.io](https://revela.verichains.io). Currently our decompiler is compatible with [Aptos](https://aptoslabs.com/) blockchain.
 
-Aptos is a layer 1 blockchain bringing a paradigm shift to Web3 through better technology and user experience. Built with Move to create a home for developers building next-gen applications.
+## About Us
 
-## Getting Started
+[Verichains](https://verichains.io) is a leading blockchain security provider specializing in cryptanalysis, audits, and app security.
 
-* [Aptos Foundation](https://aptosfoundation.org/)
-* [Aptos Developer Network](https://aptos.dev)
-* [Guide - Setup Your Environment](https://aptos.dev/category/environment)
-* [Tutorials](https://aptos.dev/tutorials)
-* Follow us on [Twitter](https://twitter.com/aptos_network).
-* Join us on the [Aptos Discord](https://discord.gg/aptosnetwork).
+## Background
 
-## Contributing
+The groundbreaking [Move language](https://github.com/move-language/move) for smart contracts is revolutionizing the development of secure and resilient blockchains like Aptos. As contracts become more complex and play a vital role in safeguarding digital assets, it is essential to provide users with the means to verify the safety of the underlying code. Unfortunately, it becomes common to see Move-based protocols deployed solely in low-level bytecode form, without accompanying source code. This practice not only obfuscates the smart contracts’ functionality but also presents a significant barrier to security analysis, given that Move is a relatively new language and lacks tooling to easily analyze Move contracts.
 
-You can learn more about contributing to the Aptos project by reading our [Contribution Guide](https://github.com/aptos-labs/aptos-core/blob/main/CONTRIBUTING.md) and by viewing our [Code of Conduct](https://github.com/aptos-labs/aptos-core/blob/main/CODE_OF_CONDUCT.md).
+In response to this challenge, Verichains has worked with Aptos Labs to develop Revela, the first-ever open-source tool designed to decompile Move bytecode back to its original source code, which can then be fed into the Move compiler once again. By empowering users to independently verify and analyze contract code, Revela establishes new industry standards for security, openness, and trust in the Aptos ecosystem.
 
-Aptos Core is licensed under [Apache 2.0](https://github.com/aptos-labs/aptos-core/blob/main/LICENSE).
+## Build
+
+Revela requires Rust compiler to build. From the root directory, execute the following command.
+
+```
+$ cargo build -p revela
+```
+
+The resulted binary `revela` can be found under the directory `target/debug`.
+
+## Install
+
+Run the following command to install Revela.
+
+```
+$ cargo install --path third_party/move/tools/revela
+```
+
+On MacOS and Linux, Revela is typically installed in directory `~/.cargo/bin`.
+Ensure to have this path in your `PATH` environment variable so Revela can be executed from any location.
+This step can be done with the below command.
+
+```
+$ export PATH=~/.cargo/bin:$PATH
+```
+
+## Usage
+
+To decompile a Move bytecode file, pass its file path as a command line
+argument using `--bytecode` (or `-b`), as shown below.
+
+```
+$ revela --bytecode <file_path>
+```
+
+For example:
+
+```
+$ revela --bytecode third_party/move/tools/revela/tests/bytecode/BasicCoin.mv
+```
+
+## License
+
+Revela is released under the open source [Apache License](LICENSE)
