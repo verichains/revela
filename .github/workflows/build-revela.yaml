@@ -3,7 +3,7 @@ name: "Build revela"
 on:
   push:
     branches:
-      - dev
+      - master
     tags:
       - 'v[0-9]+.*'
 
@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 1000
 
       - name: Build
-        uses: "verichains/revela/.github/actions/build-revela@dev"
+        uses: "verichains/revela/.github/actions/build-revela@master"
         with:
           target: ${{ matrix.target }}
           release_dir: "/tmp/revela-release"
