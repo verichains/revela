@@ -395,8 +395,8 @@ impl<'a> Decompiler<'a> {
 
     pub fn decompile(&mut self) -> Result<String> {
         let mut pipeline = FunctionTargetPipeline::default();
-        pipeline.set_max_loop(1000);
-        pipeline.add_processor(PeepHoleProcessor::new());
+        pipeline.set_max_loop(32);
+        pipeline.add_processor(PeepHoleProcessor::new(32));
         pipeline.add_processor(ReachingDefProcessor::new());
         pipeline.add_processor(LiveVarAnalysisProcessor::new());
 

@@ -661,10 +661,9 @@ fn cleanup_dummy_dispatch_blocks(
         for i in 0..blocks.len() {
             if let Some(_) = check_is_dummy_dispatch_block(&blocks[i]) {
                 if let Terminator::Branch { target } = blocks[i].next {
-                    if target == i {
-                        return Err(anyhow::anyhow!("Found self-loop branch"));
+                    if target != i {
+                        next_merge = Some((i, target));
                     }
-                    next_merge = Some((i, target));
                     break;
                 } else {
                     panic!("Unexpected terminator");

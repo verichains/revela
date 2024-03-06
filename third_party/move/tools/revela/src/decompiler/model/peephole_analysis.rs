@@ -12,11 +12,13 @@ use move_stackless_bytecode::{
 };
 use std::collections::BTreeMap;
 
-pub struct PeepHoleProcessor();
+pub struct PeepHoleProcessor {
+    max_loop: usize,
+}
 
 impl PeepHoleProcessor {
-    pub fn new() -> Box<Self> {
-        Box::new(Self())
+    pub fn new(max_loop: usize) -> Box<Self> {
+        Box::new(Self { max_loop })
     }
 }
 
@@ -35,7 +37,7 @@ impl FunctionTargetProcessor for PeepHoleProcessor {
 
         let code = std::mem::take(&mut data.code);
 
-        let code = Self::transform_code(code);
+        let code = Self::transform_code(code, self.max_loop);
 
         data.code = code;
         data
@@ -153,7 +155,7 @@ impl PeepHoleProcessor {
 
                                 // Continue, so we do not take this insn - effectively removing it
                                 continue;
-                            },
+                            }
 
                             // Call(AttrId(6), [7], Add, [5, 6], None); Call(AttrId(7), [], Drop, [7], None)
                             Bytecode::Call(_, dest, last_inst_oper, _, _)
@@ -169,9 +171,9 @@ impl PeepHoleProcessor {
 
                                 // Continue, so we do not take this insn - effectively removing it
                                 continue;
-                            },
+                            }
 
-                            _ => {},
+                            _ => {}
                         }
                     }
                 }
@@ -200,10 +202,12 @@ impl PeepHoleProcessor {
                     match last_insn {
                         // pattern: Label(AttrId(30), Label(5)); Jump(AttrId(33), Label(6))
                         Bytecode::Label(_, old_target) => {
-                            label_map.insert(old_target.clone(), new_target.clone());
-                        },
+                            if old_target != new_target {
+                                label_map.insert(old_target.clone(), new_target.clone());
+                            }
+                        }
 
-                        _ => {},
+                        _ => {}
                     }
                 }
             }
@@ -224,7 +228,7 @@ impl PeepHoleProcessor {
                     let insn_new = Bytecode::Branch(id, *then_new, *else_new, cond);
 
                     new_code.push(insn_new);
-                },
+                }
 
                 Bytecode::Jump(id, label) => {
                     if label_map.contains_key(&label) {
@@ -235,11 +239,11 @@ impl PeepHoleProcessor {
                     let insn_new = Bytecode::Jump(id, *label_new);
 
                     new_code.push(insn_new);
-                },
+                }
 
                 _ => {
                     new_code.push(insn.clone());
-                },
+                }
             }
         }
 
@@ -261,11 +265,11 @@ impl PeepHoleProcessor {
                     new_code.push(insn_new);
 
                     changed = true;
-                },
+                }
 
                 _ => {
                     new_code.push(insn.clone());
-                },
+                }
             }
         }
 
@@ -333,7 +337,7 @@ impl PeepHoleProcessor {
                     let insn_new = Bytecode::Branch(*id, *then_new, *else_new, *cond);
 
                     new_code.push(insn_new);
-                },
+                }
 
                 Bytecode::Jump(id, label) => {
                     if label_map.contains_key(label) {
@@ -344,7 +348,7 @@ impl PeepHoleProcessor {
                     let insn_new = Bytecode::Jump(*id, *label_new);
 
                     new_code.push(insn_new);
-                },
+                }
 
                 Bytecode::Label(_, label) => {
                     // if this label has mapping, remove it
@@ -354,11 +358,11 @@ impl PeepHoleProcessor {
                     } else {
                         new_code.push(insn.clone());
                     }
-                },
+                }
 
                 _ => {
                     new_code.push(insn.clone());
-                },
+                }
             }
         }
 
@@ -380,9 +384,9 @@ impl PeepHoleProcessor {
                             // 2 consecutive Jumps, so do not keep this instruction
                             changed = true;
                             continue;
-                        },
+                        }
 
-                        _ => {},
+                        _ => {}
                     }
                 }
             }
@@ -409,9 +413,9 @@ impl PeepHoleProcessor {
                             // remove the previous Jump
                             new_code.pop();
                             changed = true;
-                        },
+                        }
 
-                        _ => {},
+                        _ => {}
                     }
                 }
             }
@@ -434,13 +438,13 @@ impl PeepHoleProcessor {
                 Bytecode::Branch(_, then_label, else_label, _) => {
                     used_labels.push(then_label);
                     used_labels.push(else_label);
-                },
+                }
 
                 Bytecode::Jump(_, label) => {
                     used_labels.push(label);
-                },
+                }
 
-                _ => {},
+                _ => {}
             }
         }
 
@@ -457,21 +461,25 @@ impl PeepHoleProcessor {
                         // skip this instruction
                         changed = true;
                     }
-                },
+                }
 
                 _ => {
                     new_code.push(insn.clone());
-                },
+                }
             }
         }
 
         (new_code, changed)
     }
 
-    fn transform_code(code: Vec<Bytecode>) -> Vec<Bytecode> {
+    fn transform_code(code: Vec<Bytecode>, max_loop: usize) -> Vec<Bytecode> {
         let mut new_code = code;
 
-        loop {
+        let mut loop_count = 0;
+
+        while loop_count < max_loop {
+            loop_count += 1;
+
             let (updated_code, changed1) = Self::remove_destroy(new_code);
             new_code = updated_code;
 
