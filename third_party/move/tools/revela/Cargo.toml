@@ -1,6 +1,6 @@
 [package]
 name = "revela"
-version = "1.0.0-rc3"
+version = "1.0.0-rc4"
 authors = ["Verichains"]
 description = "Decompile Move bytecode files (.mv files)"
 license = "Apache-2.0"
