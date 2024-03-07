@@ -97,7 +97,7 @@ module 0x1::pool_u64_unbound {
     }
     
     public fun multiply_then_divide(arg0: &Pool, arg1: u128, arg2: u128, arg3: u128) : u128 {
-        (to_u256(arg1) * to_u256(arg2) / to_u256(arg3)) as u128
+        ((to_u256(arg1) * to_u256(arg2) / to_u256(arg3)) as u128)
     }
     
     public fun redeem_shares(arg0: &mut Pool, arg1: address, arg2: u128) : u64 {
@@ -133,7 +133,7 @@ module 0x1::pool_u64_unbound {
         if (arg0.total_coins == 0 || arg0.total_shares == 0) {
             0
         } else {
-            multiply_then_divide(arg0, arg1, to_u128(arg2), arg0.total_shares) as u64
+            (multiply_then_divide(arg0, arg1, to_u128(arg2), arg0.total_shares) as u64)
         }
     }
     
@@ -141,16 +141,16 @@ module 0x1::pool_u64_unbound {
         if (arg0.total_coins == 0 || arg3 == 0) {
             0
         } else {
-            multiply_then_divide(arg0, arg1, to_u128(arg2), arg3) as u64
+            (multiply_then_divide(arg0, arg1, to_u128(arg2), arg3) as u64)
         }
     }
     
     fun to_u128(arg0: u64) : u128 {
-        arg0 as u128
+        (arg0 as u128)
     }
     
     fun to_u256(arg0: u128) : u256 {
-        arg0 as u256
+        (arg0 as u256)
     }
     
     public fun total_coins(arg0: &Pool) : u64 {

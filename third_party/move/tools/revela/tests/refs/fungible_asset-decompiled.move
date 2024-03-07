@@ -173,7 +173,7 @@ module 0x1::fungible_asset {
         let v0 = 0x1::object::object_address<T0>(arg0);
         if (exists<ConcurrentSupply>(v0)) {
             let v1 = &mut borrow_global_mut<ConcurrentSupply>(v0).current;
-            assert!(0x1::aggregator_v2::try_sub<u128>(v1, arg1 as u128), 0x1::error::out_of_range(20));
+            assert!(0x1::aggregator_v2::try_sub<u128>(v1, (arg1 as u128)), 0x1::error::out_of_range(20));
         } else {
             assert!(exists<Supply>(v0), 0x1::error::not_found(21));
             assert!(exists<Supply>(v0), 0x1::error::not_found(21));
@@ -238,7 +238,7 @@ module 0x1::fungible_asset {
         assert!(arg1 != 0, 0x1::error::invalid_argument(1));
         let v0 = 0x1::object::object_address<T0>(arg0);
         if (exists<ConcurrentSupply>(v0)) {
-            let v1 = arg1 as u128;
+            let v1 = (arg1 as u128);
             let v2 = 0x1::aggregator_v2::try_add<u128>(&mut borrow_global_mut<ConcurrentSupply>(v0).current, v1);
             assert!(v2, 0x1::error::out_of_range(5));
         } else {

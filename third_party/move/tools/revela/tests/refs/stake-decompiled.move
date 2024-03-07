@@ -207,7 +207,7 @@ module 0x1::stake {
     fun calculate_rewards_amount(arg0: u64, arg1: u64, arg2: u64, arg3: u64, arg4: u64) : u64 {
         let v0 = (arg4 as u128) * (arg2 as u128);
         if (v0 > 0) {
-            ((arg0 as u128) * (arg3 as u128) * (arg1 as u128) / v0) as u64
+            (((arg0 as u128) * (arg3 as u128) * (arg1 as u128) / v0) as u64)
         } else {
             0
         }
@@ -549,7 +549,7 @@ module 0x1::stake {
         let v3 = find_validator(&v2.pending_active, arg1);
         if (0x1::option::is_some<u64>(&v3)) {
             0x1::vector::swap_remove<ValidatorInfo>(&mut v2.pending_active, 0x1::option::extract<u64>(&mut v3));
-            let v4 = get_next_epoch_voting_power(v1) as u128;
+            let v4 = (get_next_epoch_voting_power(v1) as u128);
             if (v2.total_joining_power > v4) {
                 v2.total_joining_power = v2.total_joining_power - v4;
             } else {

@@ -103,7 +103,7 @@ module 0x1::pool_u64 {
     }
     
     public fun multiply_then_divide(arg0: &Pool, arg1: u64, arg2: u64, arg3: u64) : u64 {
-        (to_u128(arg1) * to_u128(arg2) / to_u128(arg3)) as u64
+        ((to_u128(arg1) * to_u128(arg2) / to_u128(arg3)) as u64)
     }
     
     public fun new(arg0: u64) : Pool {
@@ -152,7 +152,7 @@ module 0x1::pool_u64 {
     }
     
     fun to_u128(arg0: u64) : u128 {
-        arg0 as u128
+        (arg0 as u128)
     }
     
     public fun total_coins(arg0: &Pool) : u64 {

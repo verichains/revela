@@ -116,7 +116,7 @@ module 0x1::ristretto255 {
     }
     
     public fun new_scalar_from_u32(arg0: u32) : Scalar {
-        Scalar{data: scalar_from_u64_internal(arg0 as u64)}
+        Scalar{data: scalar_from_u64_internal((arg0 as u64))}
     }
     
     public fun new_scalar_from_u64(arg0: u64) : Scalar {
