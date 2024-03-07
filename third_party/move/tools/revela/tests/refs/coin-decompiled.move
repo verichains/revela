@@ -71,7 +71,7 @@ module 0x1::coin {
         let v1 = &mut borrow_global_mut<CoinInfo<T0>>(coin_address<T0>()).supply;
         if (0x1::option::is_some<0x1::optional_aggregator::OptionalAggregator>(v1)) {
             let v2 = 0x1::option::borrow_mut<0x1::optional_aggregator::OptionalAggregator>(v1);
-            0x1::optional_aggregator::sub(v2, v0 as u128);
+            0x1::optional_aggregator::sub(v2, (v0 as u128));
         };
     }
     
@@ -134,7 +134,7 @@ module 0x1::coin {
         let v0 = 0x1::aggregator::read(&arg0.value);
         assert!(v0 <= 18446744073709551615, 0x1::error::out_of_range(14));
         0x1::aggregator::sub(&mut arg0.value, v0);
-        Coin<T0>{value: v0 as u64}
+        Coin<T0>{value: (v0 as u64)}
     }
     
     public fun extract<T0>(arg0: &mut Coin<T0>, arg1: u64) : Coin<T0> {
@@ -226,7 +226,7 @@ module 0x1::coin {
     
     public(friend) fun merge_aggregatable_coin<T0>(arg0: &mut AggregatableCoin<T0>, arg1: Coin<T0>) {
         let Coin { value: v0 } = arg1;
-        0x1::aggregator::add(&mut arg0.value, v0 as u128);
+        0x1::aggregator::add(&mut arg0.value, (v0 as u128));
     }
     
     public fun mint<T0>(arg0: u64, arg1: &MintCapability<T0>) : Coin<T0> acquires CoinInfo {
@@ -236,7 +236,7 @@ module 0x1::coin {
         let v0 = &mut borrow_global_mut<CoinInfo<T0>>(coin_address<T0>()).supply;
         if (0x1::option::is_some<0x1::optional_aggregator::OptionalAggregator>(v0)) {
             let v1 = 0x1::option::borrow_mut<0x1::optional_aggregator::OptionalAggregator>(v0);
-            0x1::optional_aggregator::add(v1, arg0 as u128);
+            0x1::optional_aggregator::add(v1, (arg0 as u128));
         };
         Coin<T0>{value: arg0}
     }

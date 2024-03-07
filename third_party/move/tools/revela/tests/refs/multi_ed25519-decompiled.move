@@ -99,7 +99,7 @@ module 0x1::multi_ed25519 {
     }
     
     public fun unvalidated_public_key_num_sub_pks(arg0: &UnvalidatedPublicKey) : u8 {
-        (0x1::vector::length<u8>(&arg0.bytes) / 32) as u8
+        ((0x1::vector::length<u8>(&arg0.bytes) / 32) as u8)
     }
     
     public fun unvalidated_public_key_threshold(arg0: &UnvalidatedPublicKey) : 0x1::option::Option<u8> {
@@ -115,7 +115,7 @@ module 0x1::multi_ed25519 {
     }
     
     public fun validated_public_key_num_sub_pks(arg0: &ValidatedPublicKey) : u8 {
-        (0x1::vector::length<u8>(&arg0.bytes) / 32) as u8
+        ((0x1::vector::length<u8>(&arg0.bytes) / 32) as u8)
     }
     
     public fun validated_public_key_threshold(arg0: &ValidatedPublicKey) : u8 {

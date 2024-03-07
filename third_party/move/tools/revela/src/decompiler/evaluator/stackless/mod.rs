@@ -350,7 +350,7 @@ impl ExprNodeOperation {
                 bracket_if_binary_with_ctx(expr, Some(naming), &ctx)?
             )),
             ExprNodeOperation::Cast(ty, expr) => Ok(format!(
-                "{} as {}",
+                "({} as {})",
                 bracket_if_binary_with_ctx(expr, Some(naming), &ctx)?,
                 ty
             )),
@@ -804,7 +804,6 @@ fn check_bracket_for_binary(
         };
         let inner_precedence = match &expr.borrow().operation {
             ExprNodeOperation::Binary(op, _, _) => get_precedence(op),
-            ExprNodeOperation::Cast(..) => 3,
             _ => 1000,
         };
         Ok(if inner_precedence < parent_precedence {
@@ -828,7 +827,7 @@ fn bracket_if_binary_with_ctx(
         };
         Ok(match &expr.borrow().operation {
             ExprNodeOperation::Binary(..) => format!("({})", expr_str),
-            ExprNodeOperation::Cast(..) => format!("({})", expr_str),
+            ExprNodeOperation::Cast(..) => format!("{}", expr_str),
             _ => expr_str,
         })
     })

@@ -373,7 +373,7 @@ module 0x1::delegation_pool {
         let v8 = if (v6 > v7) {
             let v9 = 10000;
             assert!(v9 != 0, 0x1::error::invalid_argument(4));
-            (((v6 - v7) as u128) * (arg0.operator_commission_percentage as u128) / (v9 as u128)) as u64
+            ((((v6 - v7) as u128) * (arg0.operator_commission_percentage as u128) / (v9 as u128)) as u64)
         } else {
             0
         };
@@ -381,7 +381,7 @@ module 0x1::delegation_pool {
         let v11 = if (v4 > v10) {
             let v12 = 10000;
             assert!(v12 != 0, 0x1::error::invalid_argument(4));
-            (((v4 - v10) as u128) * (arg0.operator_commission_percentage as u128) / (v12 as u128)) as u64
+            ((((v4 - v10) as u128) * (arg0.operator_commission_percentage as u128) / (v12 as u128)) as u64)
         } else {
             0
         };
@@ -513,7 +513,7 @@ module 0x1::delegation_pool {
                 assert_delegation_pool_exists(arg0);
                 let v5 = operator_commission_percentage(arg0);
                 let v6 = v2 * (10000 - v5);
-                ((arg1 as u128) * (v6 as u128) / ((v6 as u128) + ((v3 * 10000) as u128))) as u64
+                (((arg1 as u128) * (v6 as u128) / ((v6 as u128) + ((v3 * 10000) as u128))) as u64)
             } else {
                 0
             };
@@ -631,7 +631,7 @@ module 0x1::delegation_pool {
     
     public fun multiply_then_divide(arg0: u64, arg1: u64, arg2: u64) : u64 {
         assert!(arg2 != 0, 0x1::error::invalid_argument(4));
-        ((arg0 as u128) * (arg1 as u128) / (arg2 as u128)) as u64
+        (((arg0 as u128) * (arg1 as u128) / (arg2 as u128)) as u64)
     }
     
     public fun observed_lockup_cycle(arg0: address) : u64 acquires DelegationPool {

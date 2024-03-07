@@ -32,7 +32,7 @@ module 0x1::math64 {
         } else {
             arg0 << 32 - v0
         };
-        let v2 = v1 as u128;
+        let v2 = (v1 as u128);
         let v3 = 0;
         let v4 = 2147483648;
         while (v4 != 0) {

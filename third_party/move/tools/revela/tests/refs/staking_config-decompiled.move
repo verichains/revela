@@ -62,12 +62,12 @@ module 0x1::staking_config {
             let (v3, v4) = if (0x1::fixed_point64::is_zero(v2)) {
                 (0, 1)
             } else {
-                let v5 = 0x1::fixed_point64::divide_u128(1000000 as u128, v2);
+                let v5 = 0x1::fixed_point64::divide_u128((1000000 as u128), v2);
                 let v6 = v5;
                 if (v5 > 18446744073709551615) {
                     v6 = 18446744073709551615;
                 };
-                (0x1::fixed_point64::multiply_u128(v6, v2) as u64, v6 as u64)
+                ((0x1::fixed_point64::multiply_u128(v6, v2) as u64), (v6 as u64))
             };
             (v3, v4)
         } else {
