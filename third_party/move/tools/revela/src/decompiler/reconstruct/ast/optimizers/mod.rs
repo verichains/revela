@@ -154,7 +154,7 @@ fn optimize_variables_declaration(
                 | I::CommentStatement(_)
                 | I::PreDeclareStatement { .. } => {}
                 I::PossibleAssignStatement {
-                    assigment_id: _,
+                    assignment_id: _,
                     value,
                     variable,
                     is_decl,
@@ -258,7 +258,7 @@ fn optimize_variables_declaration(
                     });
                 }
                 I::PossibleAssignStatement {
-                    assigment_id: _,
+                    assignment_id: _,
                     value,
                     variable,
                     is_decl,

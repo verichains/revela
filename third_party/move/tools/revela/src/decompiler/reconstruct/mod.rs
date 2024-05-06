@@ -122,7 +122,7 @@ impl<'a> SourceGen<'a> {
     }
 
     // this function check with the assumption that the variable's value has no dependency
-    fn can_ignore_variable_assigment(
+    fn can_ignore_variable_assignment(
         &self,
         v: usize,
         s_ctx: &StructureCtx,
@@ -169,7 +169,6 @@ impl<'a> SourceGen<'a> {
         &self,
         _code_unit: &mut DecompiledCodeUnitRef, // in case we need to add comments
         dst: usize,
-        is_variable_copy_assigment: bool,
         result: &super::evaluator::stackless::Expr,
         evaluation_ctx: &StacklessEvaluationContext<'_>,
         s_ctx: &StructureCtx,
@@ -246,13 +245,9 @@ impl<'a> SourceGen<'a> {
                     return false;
                 }
 
-                let last_read = dst_var.unwrap().first_read;
-                if deps.iter().all(|d| {
+                if deps.iter().all(|d: &usize| {
                     if let Some(dusg) = forward_state.get(d) {
-                        // on forward state, time is counted from the end, so the larger its value, the earlier it occurs
-                        // equality is allowed, the expression will be dep = f(dst) at that time
-                        dusg.last_write < last_read
-                            || (is_variable_copy_assigment && dusg.last_write == last_read)
+                        !dusg.vars_read_before_last_write.contains(&dst)
                     } else {
                         true
                     }
@@ -589,11 +584,10 @@ impl<'a> SourceGen<'a> {
                     if dst_value.is_non_trivial()
                         || pre_flushed.contains(&dst)
                         || cannot_keep_as_expr
-                        || !self.can_ignore_variable_assigment(dst, s_ctx, &node_var_usage)
+                        || !self.can_ignore_variable_assignment(dst, s_ctx, &node_var_usage)
                         || self.check_need_declare(
                             &mut codeunit,
                             dst,
-                            true,
                             &result,
                             &evaluation_ctx,
                             s_ctx,
@@ -608,14 +602,14 @@ impl<'a> SourceGen<'a> {
 
                         evaluation_ctx.flush_local_value(dst, Some(is_new));
                     } else {
-                        let assigment_id = evaluation_ctx.flush_pending_local_value(
+                        let assignment_id = evaluation_ctx.flush_pending_local_value(
                             dst,
                             Some(is_new),
                             result.copy(),
                         );
 
                         codeunit.add(DecompiledCodeItem::PossibleAssignStatement {
-                            assigment_id,
+                            assignment_id,
                             variable: dst,
                             value: DecompiledExpr::EvaluationExpr(result.copy()).boxed(),
                             is_decl: is_new,
@@ -680,11 +674,10 @@ impl<'a> SourceGen<'a> {
                         if dst_value.is_non_trivial()
                             || pre_flushed.contains(&dst)
                             || cannot_keep_as_expr
-                            || !self.can_ignore_variable_assigment(dst, s_ctx, &node_var_usage)
+                            || !self.can_ignore_variable_assignment(dst, s_ctx, &node_var_usage)
                             || self.check_need_declare(
                                 &mut codeunit,
                                 dst,
-                                false,
                                 &result,
                                 &evaluation_ctx,
                                 s_ctx,
@@ -699,14 +692,14 @@ impl<'a> SourceGen<'a> {
 
                             evaluation_ctx.flush_local_value(dst, Some(is_new));
                         } else {
-                            let assigment_id = evaluation_ctx.flush_pending_local_value(
+                            let assignment_id = evaluation_ctx.flush_pending_local_value(
                                 dst,
                                 Some(is_new),
                                 result.copy(),
                             );
 
                             codeunit.add(DecompiledCodeItem::PossibleAssignStatement {
-                                assigment_id,
+                                assignment_id,
                                 variable: dst,
                                 value: DecompiledExpr::EvaluationExpr(result.copy()).boxed(),
                                 is_decl: is_new,
@@ -744,7 +737,7 @@ impl<'a> SourceGen<'a> {
                     // we dont need cycle reference in this case, as val is a constant
                     if dst_value.is_non_trivial()
                         || pre_flushed.contains(&dst)
-                        || !self.can_ignore_variable_assigment(dst, s_ctx, &node_var_usage)
+                        || !self.can_ignore_variable_assignment(dst, s_ctx, &node_var_usage)
                     {
                         let is_new = new_variables.contains(&dst);
                         codeunit.add(DecompiledCodeItem::AssignStatement {

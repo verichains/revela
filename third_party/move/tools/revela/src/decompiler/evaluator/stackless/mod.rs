@@ -54,7 +54,7 @@ pub enum ExprNodeOperation {
 
     VariableSnapshot {
         variable: usize,
-        assigment_id: usize,
+        assignment_id: usize,
         value: ExprNodeRef,
     },
 }
@@ -173,11 +173,11 @@ impl ExprNodeOperation {
             ExprNodeOperation::LocalVariable(idx) => ExprNodeOperation::LocalVariable(idx.clone()),
             ExprNodeOperation::VariableSnapshot {
                 variable,
-                assigment_id,
+                assignment_id,
                 value,
             } => ExprNodeOperation::VariableSnapshot {
                 variable: variable.clone(),
-                assigment_id: assigment_id.clone(),
+                assignment_id: assignment_id.clone(),
                 value: value.borrow().copy_as_ref(),
             },
         }
@@ -600,7 +600,7 @@ impl ExprNodeOperation {
                 .has_reference_to_any_variable(variables),
             ExprNodeOperation::VariableSnapshot {
                 variable,
-                assigment_id: _,
+                assignment_id: _,
                 value,
             } => {
                 variables.contains(variable)
@@ -749,7 +749,7 @@ impl ExprNodeOperation {
             }
             ExprNodeOperation::VariableSnapshot {
                 variable,
-                assigment_id,
+                assignment_id,
                 value,
             } => {
                 if variables.contains(variable) {
@@ -757,7 +757,7 @@ impl ExprNodeOperation {
                 } else {
                     ExprNodeOperation::VariableSnapshot {
                         variable: *variable,
-                        assigment_id: *assigment_id,
+                        assignment_id: *assignment_id,
                         value: value.borrow().commit_pending_variables(variables),
                     }
                     .to_node()
@@ -979,14 +979,14 @@ impl Display for ExprNodeOperation {
             }
             ExprNodeOperation::VariableSnapshot {
                 variable,
-                assigment_id,
+                assignment_id,
                 value,
             } => {
                 write!(
                     f,
                     "/*snapshot:{}:{}*/{}",
                     variable,
-                    assigment_id,
+                    assignment_id,
                     value.borrow().to_string()
                 )
             }
@@ -1175,7 +1175,7 @@ impl Display for Expr {
 struct VariableValueSnapshot {
     value: Expr,
     defined_in_context: Option<usize>,
-    assigment_idx: usize,
+    assignment_idx: usize,
 }
 
 #[derive(Debug)]
@@ -1263,13 +1263,13 @@ impl<'a> StacklessEvaluationContext<'a> {
         if !self.is_flushed(idx) {
             if let Some(VariableValueSnapshot {
                 value,
-                assigment_idx,
+                assignment_idx,
                 ..
             }) = self.get_pending_var(idx)
             {
                 return ExprNodeOperation::VariableSnapshot {
                     variable: idx,
-                    assigment_id: *assigment_idx,
+                    assignment_id: *assignment_idx,
                     value: value.copy().node,
                 }
                 .to_expr();
@@ -1304,7 +1304,7 @@ impl<'a> StacklessEvaluationContext<'a> {
             VariableValueSnapshot {
                 value,
                 defined_in_context: Some(self.context_id),
-                assigment_idx: id,
+                assignment_idx: id,
             },
         );
         is_new_variable
@@ -1512,7 +1512,7 @@ impl<'a> StacklessEvaluationContext<'a> {
             VariableValueSnapshot {
                 value: ExprNodeOperation::Raw(name.clone()).to_expr(),
                 defined_in_context: if is_new { Some(self.context_id) } else { None },
-                assigment_idx: usize::MAX,
+                assignment_idx: usize::MAX,
             },
         );
     }
@@ -1524,14 +1524,14 @@ impl<'a> StacklessEvaluationContext<'a> {
             VariableValueSnapshot {
                 value: ExprNodeOperation::LocalVariable(dst).to_expr(),
                 defined_in_context: if is_new { Some(self.context_id) } else { None },
-                assigment_idx: usize::MAX,
+                assignment_idx: usize::MAX,
             },
         );
     }
 
     fn is_flushed(&self, dst: usize) -> bool {
         if let Some(VariableValueSnapshot {
-            assigment_idx: aid, ..
+            assignment_idx: aid, ..
         }) = self.variables.get(&dst)
         {
             *aid == usize::MAX
@@ -1559,7 +1559,7 @@ impl<'a> StacklessEvaluationContext<'a> {
             VariableValueSnapshot {
                 value,
                 defined_in_context: if is_new { Some(self.context_id) } else { None },
-                assigment_idx: id,
+                assignment_idx: id,
             },
         );
         id
@@ -1579,13 +1579,13 @@ impl<'a> StacklessEvaluationContext<'a> {
                 var_id,
                 VariableValueSnapshot {
                     defined_in_context: br_context_definition_id,
-                    assigment_idx: br_aid,
+                    assignment_idx: br_aid,
                     ..
                 },
             ) in branch.variables.iter()
             {
                 if let Some(VariableValueSnapshot {
-                    assigment_idx: aid,
+                    assignment_idx: aid,
                     defined_in_context: current_context_definition_id,
                     ..
                 }) = self.variables.get(var_id)
@@ -1606,7 +1606,7 @@ impl<'a> StacklessEvaluationContext<'a> {
         for branch in branches {
             for (var_id, var_value) in branch.pending_variables.iter() {
                 if let Some(self_var_value) = self.pending_variables.get(var_id) {
-                    let conflict = var_value.assigment_idx != self_var_value.assigment_idx;
+                    let conflict = var_value.assignment_idx != self_var_value.assignment_idx;
                     if conflict {
                         pending_variables_to_remove.insert(*var_id);
                     }

@@ -107,9 +107,8 @@ module 0x1337::property_map {
         let v2 = 0;
         while (v2 < v0) {
             let v3 = *0x1::vector::borrow<0x1::string::String>(&arg0, v2);
-            let v4 = *0x1::vector::borrow<PropertyValue>(&arg1, v2);
             assert!(0x1::string::length(&v3) <= 128, 0x1::error::invalid_argument(7));
-            add(&mut v1, v3, v4);
+            add(&mut v1, v3, *0x1::vector::borrow<PropertyValue>(&arg1, v2));
             v2 = v2 + 1;
         };
         v1

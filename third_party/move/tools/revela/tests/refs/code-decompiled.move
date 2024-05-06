@@ -43,12 +43,11 @@ module 0x1::code {
         let v0 = &arg0.modules;
         let v1 = 0;
         while (v1 < 0x1::vector::length<ModuleMetadata>(v0)) {
-            let v2 = 0x1::vector::borrow<ModuleMetadata>(v0, v1);
-            let v3 = 0;
-            while (v3 < 0x1::vector::length<0x1::string::String>(arg1)) {
-                let v4 = &v2.name != 0x1::vector::borrow<0x1::string::String>(arg1, v3);
-                assert!(v4, 0x1::error::already_exists(1));
-                v3 = v3 + 1;
+            let v2 = 0;
+            while (v2 < 0x1::vector::length<0x1::string::String>(arg1)) {
+                let v3 = 0x1::vector::borrow<0x1::string::String>(arg1, v2);
+                assert!(&0x1::vector::borrow<ModuleMetadata>(v0, v1).name != v3, 0x1::error::already_exists(1));
+                v2 = v2 + 1;
             };
             v1 = v1 + 1;
         };
@@ -161,32 +160,30 @@ module 0x1::code {
         let v4 = get_module_names(&arg1);
         let v5 = &borrow_global<PackageRegistry>(v1).packages;
         let v6 = 0x1::vector::length<PackageMetadata>(v5);
-        let v7 = v6;
+        let v7 = 0;
         let v8 = 0;
-        let v9 = 0;
-        while (v9 < 0x1::vector::length<PackageMetadata>(v5)) {
-            let v10 = 0x1::vector::borrow<PackageMetadata>(v5, v9);
-            if (v10.name == arg1.name) {
-                v8 = v10.upgrade_number + 1;
-                check_upgradability(v10, &arg1, &v4);
-                v7 = v9;
+        while (v8 < 0x1::vector::length<PackageMetadata>(v5)) {
+            let v9 = 0x1::vector::borrow<PackageMetadata>(v5, v8);
+            if (v9.name == arg1.name) {
+                v7 = v9.upgrade_number + 1;
+                check_upgradability(v9, &arg1, &v4);
             } else {
-                check_coexistence(v10, &v4);
+                check_coexistence(v9, &v4);
             };
-            v9 = v9 + 1;
+            v8 = v8 + 1;
         };
-        arg1.upgrade_number = v8;
-        let v11 = arg1.upgrade_policy;
-        if (v7 < v6) {
-            let v12 = 0x1::vector::borrow_mut<PackageMetadata>(&mut borrow_global_mut<PackageRegistry>(v1).packages, v7);
-            *v12 = arg1;
+        arg1.upgrade_number = v7;
+        let v10 = arg1.upgrade_policy;
+        if (v6 < v6) {
+            let v11 = 0x1::vector::borrow_mut<PackageMetadata>(&mut borrow_global_mut<PackageRegistry>(v1).packages, v6);
+            *v11 = arg1;
         } else {
             0x1::vector::push_back<PackageMetadata>(&mut borrow_global_mut<PackageRegistry>(v1).packages, arg1);
         };
         if (0x1::features::code_dependency_check_enabled()) {
-            request_publish_with_allowed_deps(v1, v4, v3, arg2, v11.policy);
+            request_publish_with_allowed_deps(v1, v4, v3, arg2, v10.policy);
         } else {
-            request_publish(v1, v4, arg2, v11.policy);
+            request_publish(v1, v4, arg2, v10.policy);
         };
     }
     

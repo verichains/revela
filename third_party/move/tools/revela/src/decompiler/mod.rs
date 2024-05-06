@@ -20,11 +20,11 @@ use move_model::{
 use move_stackless_bytecode::{
     function_target::FunctionTarget,
     function_target_pipeline::{FunctionTargetPipeline, FunctionTargetsHolder, FunctionVariant},
-    reaching_def_analysis::ReachingDefProcessor,
 };
 
 use model::livevar_analysis::LiveVarAnalysisProcessor;
 use model::peephole_analysis::PeepHoleProcessor;
+use model::reaching_def_analysis::ReachingDefProcessor;
 
 use self::reconstruct::code_unit::SourceCodeUnit;
 pub use self::reconstruct::OptimizerSettings;

@@ -236,7 +236,7 @@ pub(crate) enum DecompiledCodeItem {
     CommentStatement(String),
     PossibleAssignStatement {
         #[allow(dead_code)]
-        assigment_id: usize,
+        assignment_id: usize,
         variable: usize,
         value: DecompiledExprRef,
         is_decl: bool,
@@ -606,7 +606,7 @@ impl DecompiledCodeUnit {
                     use_as_result,
                 } => {
                     let prefix = match use_as_result {
-                        ResultUsageType::None => let_assigment_or_empty(result_variables, naming),
+                        ResultUsageType::None => let_assignment_or_empty(result_variables, naming),
                         ResultUsageType::Return => {
                             if can_obmit_return {
                                 String::new()
@@ -694,7 +694,7 @@ fn to_decl_source(
     Ok(())
 }
 
-fn let_assigment_or_empty(result_variables: &Vec<usize>, naming: &Naming) -> String {
+fn let_assignment_or_empty(result_variables: &Vec<usize>, naming: &Naming) -> String {
     if result_variables.is_empty() {
         String::new()
     } else {

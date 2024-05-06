@@ -23,7 +23,7 @@ pub(crate) fn collect_referenced_variables(
     for item in unit.blocks.iter() {
         match item {
             DecompiledCodeItem::PossibleAssignStatement {
-                assigment_id: _,
+                assignment_id: _,
                 variable,
                 value,
                 is_decl,

@@ -57,11 +57,9 @@ module 0x1::bit_vector {
             let v2 = arg1;
             while (v2 < arg0.length) {
                 if (is_index_set(arg0, v2)) {
-                    let v3 = v2 - arg1;
-                    set(arg0, v3);
+                    set(arg0, v2 - arg1);
                 } else {
-                    let v4 = v2 - arg1;
-                    unset(arg0, v4);
+                    unset(arg0, v2 - arg1);
                 };
                 v2 = v2 + 1;
             };
