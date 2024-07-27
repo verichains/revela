@@ -369,7 +369,7 @@ pub mod policy {
         }
 
         /// Create a new policy in Vault, see the explanation for Policy for how the data is
-        /// structured. Vault does not distingush a create and update. An update must first read the
+        /// structured. Vault does not distinguish a create and update. An update must first read the
         /// existing policy, amend the contents,  and then be applied via this API.
         pub fn set_policy(
             &self,

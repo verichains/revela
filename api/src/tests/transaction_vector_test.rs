@@ -7,7 +7,7 @@
  *
  * Purpose of transaction vector test
  *
- *  a. Validates that the BCS and transaction signing code always genereate consistent bytes
+ *  a. Validates that the BCS and transaction signing code always generate consistent bytes
  *  b. The golden files contain the expected outputs for various transaction payloads. These files could be used by
  *     other languages to verify their implementations of the transaction signing code.
  *  c. The transaction payload generation heavily relies on proptest. We need to make sure the proptest uses a

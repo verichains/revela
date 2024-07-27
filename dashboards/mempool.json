@@ -2661,7 +2661,7 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "${Datasource}" },
-      "description": "rate of broadcasts that are retrying expired braodcasts (that did not get back an ACK in window of time)",
+      "description": "rate of broadcasts that are retrying expired broadcasts (that did not get back an ACK in window of time)",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },

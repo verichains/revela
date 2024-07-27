@@ -31,7 +31,7 @@ pub async fn middleware_log<E: Endpoint>(next: E, request: Request) -> Result<Re
         method: request.method().clone(),
         path: request.uri().path().to_string(),
         status: 0,
-        referer: request
+        referrer: request
             .headers()
             .get(header::REFERER)
             .and_then(|v| v.to_str().ok().map(|v| v.to_string())),
@@ -140,7 +140,7 @@ pub struct HttpRequestLog {
     method: Method,
     path: String,
     pub status: u16,
-    referer: Option<String>,
+    referrer: Option<String>,
     user_agent: Option<String>,
     aptos_client: Option<String>,
     #[schema(debug)]

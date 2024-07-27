@@ -48,7 +48,7 @@ for rev in $(git rev-list $oldrev..$newrev); do
 done
 
 # Disallow checking in insane filenames that are not broadly
-# compatible across source control systems and plaforms.
+# compatible across source control systems and platforms.
 #
 # For example, no carriage returns or line feeds should be allowed in filenames.
 export LC_ALL=C

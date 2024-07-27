@@ -329,7 +329,7 @@ where
     statuses
 }
 
-/// Perfoms VM validation on the transactions and inserts those that passes
+/// Performs VM validation on the transactions and inserts those that passes
 /// validation into the mempool.
 #[cfg(not(feature = "consensus-only-perf-test"))]
 fn validate_and_add_transactions<NetworkClient, TransactionValidator>(

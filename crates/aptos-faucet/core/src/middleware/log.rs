@@ -31,7 +31,7 @@ pub async fn middleware_log<E: Endpoint>(next: E, request: Request) -> Result<Re
         source_ip,
         method: request.method().to_string(),
         path: request.uri().path().to_string(),
-        referer: request
+        referrer: request
             .headers()
             .get(header::REFERER)
             .and_then(|v| v.to_str().ok().map(|v| v.to_string())),
@@ -74,7 +74,7 @@ pub struct HttpRequestLog {
     source_ip: Option<IpAddr>,
     method: String,
     path: String,
-    referer: Option<String>,
+    referrer: Option<String>,
     user_agent: Option<String>,
     forwarded: Option<String>,
 }

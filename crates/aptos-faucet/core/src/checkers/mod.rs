@@ -7,7 +7,7 @@ mod ip_blocklist;
 mod magic_header;
 mod memory_ratelimit;
 mod redis_ratelimit;
-mod referer_blocklist;
+mod referrer_blocklist;
 mod tap_captcha;
 
 pub use self::tap_captcha::CaptchaManager;
@@ -18,7 +18,7 @@ use self::{
     magic_header::{MagicHeaderChecker, MagicHeaderCheckerConfig},
     memory_ratelimit::{MemoryRatelimitChecker, MemoryRatelimitCheckerConfig},
     redis_ratelimit::{RedisRatelimitChecker, RedisRatelimitCheckerConfig},
-    referer_blocklist::RefererBlocklistChecker,
+    referrer_blocklist::RefererBlocklistChecker,
     tap_captcha::{TapCaptchaChecker, TapCaptchaCheckerConfig},
 };
 use crate::{

@@ -44,7 +44,7 @@ impl Subst {
         match (stack_sig, instr_sig) {
             (tok, SignatureToken::TypeParameter(idx)) => {
                 if let Some(other_type) = self.subst.get(&(idx as usize)).cloned() {
-                    // If we have already defined a subtitution for this type parameter, then make
+                    // If we have already defined a substitution for this type parameter, then make
                     // sure the signature token on the stack is amenable with the type selection.
                     tok == other_type
                 } else {
@@ -95,9 +95,9 @@ impl Subst {
 pub fn abilities_for_token(
     state: &AbstractState,
     token: &SignatureToken,
-    type_paramters: &[AbilitySet],
+    type_parameters: &[AbilitySet],
 ) -> AbilitySet {
-    abilities(&state.module.module, token, type_paramters)
+    abilities(&state.module.module, token, type_parameters)
 }
 
 /// Given a locals signature index, determine the abilities for each signature token. Restricted for

@@ -469,8 +469,8 @@ mod test {
         make_list_file("/tmp/ip_blocklist.txt", ip_ranges)
     }
 
-    fn make_referer_blocklist_file(referers: &[&str]) -> Result<()> {
-        make_list_file("/tmp/referer_blocklist.txt", referers)
+    fn make_referrer_blocklist_file(referrers: &[&str]) -> Result<()> {
+        make_list_file("/tmp/referrer_blocklist.txt", referrers)
     }
 
     fn get_fund_request(amount: Option<u64>) -> FundRequest {
@@ -537,7 +537,7 @@ mod test {
         init();
         make_ip_blocklist(&[])?;
         make_auth_tokens_file(&["test_token"])?;
-        make_referer_blocklist_file(&["https://mysite.com"])?;
+        make_referrer_blocklist_file(&["https://mysite.com"])?;
         let config_content = include_str!("../../../configs/testing_checkers.yaml");
         let (port, _handle) = start_server(config_content).await?;
 
@@ -584,7 +584,7 @@ mod test {
         assert!(rejection_reason_codes.contains(&RejectionReasonCode::MagicHeaderIncorrect));
         assert!(rejection_reason_codes.contains(&RejectionReasonCode::AuthTokenInvalid));
 
-        // Assert that the referer blocklist checker works.
+        // Assert that the referrer blocklist checker works.
         let response = reqwest::Client::new()
             .post(get_fund_endpoint(port))
             .body(get_fund_request(Some(10)).to_json_string())

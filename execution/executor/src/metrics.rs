@@ -118,7 +118,7 @@ pub static APTOS_EXECUTOR_COMMIT_BLOCKS_SECONDS: Lazy<Histogram> = Lazy::new(|| 
         // metric name
         "aptos_executor_commit_blocks_seconds",
         // metric description
-        "The total time spent in seconds of commiting blocks in Aptos executor ",
+        "The total time spent in seconds of committing blocks in Aptos executor ",
         exponential_buckets(/*start=*/ 1e-3, /*factor=*/ 2.0, /*count=*/ 20).unwrap(),
     )
     .unwrap()

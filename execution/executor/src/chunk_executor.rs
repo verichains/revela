@@ -280,7 +280,7 @@ impl<V: VMExecutor> ChunkExecutorInner<V> {
             )?
         };
 
-        // Calcualte state snapshot
+        // Calculate state snapshot
         let (result_state, next_epoch_state, state_checkpoint_output) =
             ApplyChunkOutput::calculate_state_checkpoint(
                 chunk_output,

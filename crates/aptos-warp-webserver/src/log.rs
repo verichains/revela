@@ -21,7 +21,7 @@ pub fn logger() -> Log<impl Fn(Info) + Copy> {
             method: info.method().to_string(),
             path: info.path().to_string(),
             status,
-            referer: info.referer(),
+            referrer: info.referrer(),
             user_agent: info.user_agent(),
             elapsed: info.elapsed(),
             forwarded: info
@@ -45,7 +45,7 @@ pub struct HttpRequestLog<'a> {
     method: String,
     path: String,
     status: u16,
-    referer: Option<&'a str>,
+    referrer: Option<&'a str>,
     user_agent: Option<&'a str>,
     #[schema(debug)]
     elapsed: std::time::Duration,

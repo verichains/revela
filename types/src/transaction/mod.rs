@@ -845,7 +845,7 @@ impl SignedTransaction {
         )
     }
 
-    /// Returns the hash when the transaction is commited onchain.
+    /// Returns the hash when the transaction is committed onchain.
     pub fn committed_hash(self) -> HashValue {
         Transaction::UserTransaction(self).hash()
     }

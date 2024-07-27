@@ -97,7 +97,7 @@ impl From<serde_json::Error> for Error {
     }
 }
 
-/// Client provides a client around the restful interface to a Vault servce. Learn more
+/// Client provides a client around the restful interface to a Vault service. Learn more
 /// here: <https://www.vaultproject.io/api-docs/>
 ///
 /// A brief overview of Vault:
@@ -183,7 +183,7 @@ impl Client {
     }
 
     /// Create a new policy in Vault, see the explanation for Policy for how the data is
-    /// structured. Vault does not distingush a create and update. An update must first read the
+    /// structured. Vault does not distinguish a create and update. An update must first read the
     /// existing policy, amend the contents,  and then be applied via this API.
     pub fn set_policy(&self, policy_name: &str, policy: &Policy) -> Result<(), Error> {
         let request = self

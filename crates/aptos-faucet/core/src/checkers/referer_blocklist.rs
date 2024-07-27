@@ -33,15 +33,15 @@ impl CheckerTrait for RefererBlocklistChecker {
         data: CheckerData,
         _dry_run: bool,
     ) -> Result<Vec<RejectionReason>, AptosTapError> {
-        let referer = match data.headers.get(REFERER).and_then(|v| v.to_str().ok()) {
-            Some(referer) => referer,
+        let referrer = match data.headers.get(REFERER).and_then(|v| v.to_str().ok()) {
+            Some(referrer) => referrer,
             None => return Ok(vec![]),
         };
-        if self.manager.contains(referer) {
+        if self.manager.contains(referrer) {
             Ok(vec![RejectionReason::new(
                 format!(
-                    "The provided referer is not allowed by the server: {}",
-                    referer
+                    "The provided referrer is not allowed by the server: {}",
+                    referrer
                 ),
                 RejectionReasonCode::RefererBlocklisted,
             )])

@@ -98,10 +98,10 @@ async fn test_mempool_notify_committed_txns() {
         // Sleep for a while
         tokio::time::sleep(std::time::Duration::from_millis(100)).await;
     };
-    if let Err(elasped) = timeout(std::time::Duration::from_secs(5), wait_for_commit).await {
+    if let Err(elapsed) = timeout(std::time::Duration::from_secs(5), wait_for_commit).await {
         panic!(
             "Mempool did not receive the commit notification! {:?}",
-            elasped
+            elapsed
         );
     }
 }

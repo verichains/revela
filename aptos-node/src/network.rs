@@ -422,7 +422,7 @@ fn register_client_and_service_with_network<
     }
 }
 
-/// Tranforms the given network handles into interfaces that can
+/// Transforms the given network handles into interfaces that can
 /// be used by the applications themselves.
 fn transform_network_handles_into_interfaces(
     node_config: &NodeConfig,
@@ -493,7 +493,7 @@ fn transform_network_handles_into_interfaces(
     )
 }
 
-/// Creates an application network inteface using the given
+/// Creates an application network interface using the given
 /// handles and config.
 fn create_network_interfaces<
     T: Serialize + for<'de> Deserialize<'de> + Send + Sync + Clone + 'static,

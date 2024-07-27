@@ -418,7 +418,7 @@ export class AptosClient {
    * for which events are queried. This refers to the account that events were emitted
    * to, not the account hosting the move module that emits that event type.
    * @param creationNumber Creation number corresponding to the event type.
-   * @returns Array of events assotiated with the given account and creation number.
+   * @returns Array of events associated with the given account and creation number.
    */
   @parseApiError
   async getEventsByCreationNumber(
