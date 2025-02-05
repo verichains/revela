@@ -24,7 +24,7 @@ Revela requires Rust compiler to build. From the root directory, execute the fol
 $ cargo build -p revela
 ```
 
-The resulted binary `revela` can be found under the directory `target/debug`.
+The resulting binary `revela` can be found under the directory `target/debug`.
 
 ## Install
 
