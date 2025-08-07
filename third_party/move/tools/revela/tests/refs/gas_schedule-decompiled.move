@@ -1,4 +1,5 @@
 module 0x1::gas_schedule {
+        friend 0x1::genesis;
     struct GasEntry has copy, drop, store {
         key: 0x1::string::String,
         val: u64,

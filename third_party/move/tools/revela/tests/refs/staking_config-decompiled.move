@@ -1,4 +1,6 @@
 module 0x1::staking_config {
+        friend 0x1::genesis;
+        friend 0x1::stake;
     struct StakingConfig has copy, drop, key {
         minimum_stake: u64,
         maximum_stake: u64,

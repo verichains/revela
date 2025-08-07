@@ -1,4 +1,5 @@
 module 0x1::governance_proposal {
+        friend 0x1::aptos_governance;
     struct GovernanceProposal has drop, store {
         dummy_field: bool,
     }

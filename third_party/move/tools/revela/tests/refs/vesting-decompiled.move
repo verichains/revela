@@ -1,4 +1,5 @@
 module 0x1::vesting {
+        friend 0x1::genesis;
     struct AdminStore has key {
         vesting_contracts: vector<address>,
         nonce: u64,

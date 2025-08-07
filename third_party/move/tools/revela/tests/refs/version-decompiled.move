@@ -1,4 +1,5 @@
 module 0x1::version {
+        friend 0x1::genesis;
     struct SetVersionCapability has key {
         dummy_field: bool,
     }

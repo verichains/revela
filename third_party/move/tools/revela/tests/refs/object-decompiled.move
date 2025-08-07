@@ -1,4 +1,5 @@
 module 0x1::object {
+        friend 0x1::primary_fungible_store;
     struct ConstructorRef has drop {
         self: address,
         can_delete: bool,

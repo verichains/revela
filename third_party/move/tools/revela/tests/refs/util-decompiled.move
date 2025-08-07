@@ -1,4 +1,6 @@
 module 0x1::util {
+        friend 0x1::code;
+        friend 0x1::gas_schedule;
     public fun address_from_bytes(arg0: vector<u8>) : address {
         from_bytes<address>(arg0)
     }

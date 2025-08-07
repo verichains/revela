@@ -1,4 +1,5 @@
 module 0x1::block {
+        friend 0x1::genesis;
     struct BlockResource has key {
         height: u64,
         epoch_interval: u64,

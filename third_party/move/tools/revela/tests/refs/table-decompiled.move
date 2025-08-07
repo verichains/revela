@@ -1,4 +1,5 @@
 module 0x1::table {
+        friend 0x1::table_with_length;
     struct Box<T0> has drop, store, key {
         val: T0,
     }

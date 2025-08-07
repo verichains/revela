@@ -1,4 +1,5 @@
 module 0x1::any {
+        friend 0x1::copyable_any;
     struct Any has drop, store {
         type_name: 0x1::string::String,
         data: vector<u8>,

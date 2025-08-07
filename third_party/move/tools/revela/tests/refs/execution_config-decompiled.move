@@ -1,4 +1,5 @@
 module 0x1::execution_config {
+        friend 0x1::genesis;
     struct ExecutionConfig has key {
         config: vector<u8>,
     }

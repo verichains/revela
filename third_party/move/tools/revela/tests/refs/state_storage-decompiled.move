@@ -1,4 +1,8 @@
 module 0x1::state_storage {
+        friend 0x1::block;
+        friend 0x1::genesis;
+        friend 0x1::reconfiguration;
+        friend 0x1::storage_gas;
     struct GasParameter has store, key {
         usage: Usage,
     }

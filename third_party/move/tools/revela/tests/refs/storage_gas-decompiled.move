@@ -1,4 +1,7 @@
 module 0x1::storage_gas {
+        friend 0x1::gas_schedule;
+        friend 0x1::genesis;
+        friend 0x1::reconfiguration;
     struct GasCurve has copy, drop, store {
         min_gas: u64,
         max_gas: u64,

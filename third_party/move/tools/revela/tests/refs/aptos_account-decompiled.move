@@ -1,4 +1,6 @@
 module 0x1::aptos_account {
+        friend 0x1::genesis;
+        friend 0x1::resource_account;
     struct AllowDirectTransfers has drop, store {
         account: address,
         new_allow_direct_transfers: bool,

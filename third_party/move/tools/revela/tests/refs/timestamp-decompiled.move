@@ -1,4 +1,5 @@
 module 0x1::timestamp {
+        friend 0x1::genesis;
     struct CurrentTimeMicroseconds has key {
         microseconds: u64,
     }

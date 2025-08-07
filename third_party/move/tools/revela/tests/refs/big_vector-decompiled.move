@@ -1,4 +1,5 @@
 module 0x1::big_vector {
+        friend 0x1::smart_vector;
     struct BigVector<T0> has store {
         buckets: 0x1::table_with_length::TableWithLength<u64, vector<T0>>,
         end_index: u64,

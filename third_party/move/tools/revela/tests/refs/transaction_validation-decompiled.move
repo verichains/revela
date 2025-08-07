@@ -1,4 +1,5 @@
 module 0x1::transaction_validation {
+        friend 0x1::genesis;
     struct TransactionValidation has key {
         module_addr: address,
         module_name: vector<u8>,

@@ -1,4 +1,5 @@
 module 0x1337::token_event_store {
+        friend 0x1337::token;
     struct CollectionDescriptionMutateEvent has drop, store {
         creator_addr: address,
         collection_name: 0x1::string::String,

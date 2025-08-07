@@ -1,4 +1,8 @@
 module 0x1::stake {
+        friend 0x1::block;
+        friend 0x1::genesis;
+        friend 0x1::reconfiguration;
+        friend 0x1::transaction_fee;
     struct AddStakeEvent has drop, store {
         pool_address: address,
         amount_added: u64,

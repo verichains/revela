@@ -1,4 +1,6 @@
 module 0x1::aggregator_factory {
+        friend 0x1::genesis;
+        friend 0x1::optional_aggregator;
     struct AggregatorFactory has key {
         phantom_table: 0x1::table::Table<address, u128>,
     }

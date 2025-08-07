@@ -1,4 +1,8 @@
 module 0x1::transaction_fee {
+        friend 0x1::block;
+        friend 0x1::genesis;
+        friend 0x1::reconfiguration;
+        friend 0x1::transaction_validation;
     struct AptosCoinCapabilities has key {
         burn_cap: 0x1::coin::BurnCapability<0x1::aptos_coin::AptosCoin>,
     }

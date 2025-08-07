@@ -1,4 +1,6 @@
 module 0x1::optional_aggregator {
+        friend 0x1::coin;
+        friend 0x1::fungible_asset;
     struct Integer has store {
         value: u128,
         limit: u128,

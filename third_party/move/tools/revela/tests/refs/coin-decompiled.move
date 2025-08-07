@@ -1,4 +1,7 @@
 module 0x1::coin {
+        friend 0x1::aptos_coin;
+        friend 0x1::genesis;
+        friend 0x1::transaction_fee;
     struct AggregatableCoin<phantom T0> has store {
         value: 0x1::aggregator::Aggregator,
     }

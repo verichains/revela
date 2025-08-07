@@ -1,4 +1,5 @@
 module 0x1::aptos_coin {
+        friend 0x1::genesis;
     struct AptosCoin has key {
         dummy_field: bool,
     }

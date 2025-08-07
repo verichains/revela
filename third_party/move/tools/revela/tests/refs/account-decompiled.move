@@ -1,4 +1,10 @@
 module 0x1::account {
+        friend 0x1::aptos_account;
+        friend 0x1::coin;
+        friend 0x1::genesis;
+        friend 0x1::multisig_account;
+        friend 0x1::resource_account;
+        friend 0x1::transaction_validation;
     struct Account has store, key {
         authentication_key: vector<u8>,
         sequence_number: u64,

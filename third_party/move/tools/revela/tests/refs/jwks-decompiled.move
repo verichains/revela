@@ -1,4 +1,5 @@
 module 0x1::jwks {
+        friend 0x1::genesis;
     struct AllProvidersJWKs has copy, drop, store {
         entries: vector<ProviderJWKs>,
     }

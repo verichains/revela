@@ -1,4 +1,6 @@
 module 0x1::guid {
+        friend 0x1::account;
+        friend 0x1::object;
     struct GUID has drop, store {
         id: ID,
     }

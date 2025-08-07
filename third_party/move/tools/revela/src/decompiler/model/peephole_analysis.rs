@@ -130,13 +130,11 @@ impl PeepHoleProcessor {
             .filter_map(|&num| cfg.instr_indexes(num).and_then(|mut iter| iter.next()))
             .collect();
 
-        // println!("block offsets = {:?}", block_offsets);
 
         // Transform code.
         let mut new_code = vec![];
 
         for (code_offset, insn) in code.iter().enumerate() {
-            // println!(">>> {code_offset}: {:?}", insn);
             if let Bytecode::Call(_, _, oper, srcs, _) = insn {
                 let offset: u16 = code_offset as u16;
 

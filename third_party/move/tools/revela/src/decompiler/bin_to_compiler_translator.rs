@@ -18,7 +18,7 @@ use move_binary_format::{
 use move_command_line_common::files::FileHash;
 use move_compiler::{
     expansion::ast::{
-        AbilitySet, Address, Attributes, Function, FunctionBody_,
+        AbilitySet, Address, Attributes, Friend, Function, FunctionBody_,
         FunctionSignature, ModuleAccess_, ModuleDefinition, ModuleIdent,
         ModuleIdent_, Program, StructDefinition, StructFields,
         StructTypeParameter, Type, Type_,
@@ -741,6 +741,19 @@ pub(crate) fn create_program(
                 })?;
         }
 
+        let friends = UniqueMap::<ModuleIdent, Friend>::maybe_from_iter(
+            compiled_module.friend_decls.iter().map(|friend_handle| {
+                let friend_module_ident = module_to_module_ident(compiled_module, friend_handle)?;
+                Ok((
+                    friend_module_ident,
+                    Friend {
+                        attributes: Attributes::new(),
+                        loc: fake_loc(),
+                    },
+                ))
+            }).collect::<Result<Vec<_>, anyhow::Error>>()?.into_iter()
+        ).unwrap();
+
         modules
             .add(
                 module_to_module_ident(compiled_module, &compiled_module.self_handle())?,
@@ -752,7 +765,7 @@ pub(crate) fn create_program(
                     dependency_order: 1000,
                     immediate_neighbors: UniqueMap::new(),
                     used_addresses: BTreeSet::new(),
-                    friends: UniqueMap::new(),
+                    friends,
                     structs,
                     functions,
                     constants: UniqueMap::new(),

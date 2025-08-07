@@ -1,4 +1,5 @@
 module 0x1::consensus_config {
+        friend 0x1::genesis;
     struct ConsensusConfig has key {
         config: vector<u8>,
     }

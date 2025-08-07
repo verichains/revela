@@ -117,6 +117,22 @@ pub fn run_stackless_compiler(env: &mut GlobalEnv, program: Program) {
         module_translator.translate(loc, module_def, None);
     }
 
+    // Process friend declarations safely without affecting global state
+    {
+        let module_table = &builder.module_table;
+        for module in env.module_data.iter_mut() {
+            let mut friend_modules = std::collections::BTreeSet::new();
+            for friend_decl in module.friend_decls.iter_mut() {
+                if let Some(friend_mod_id) = module_table.get(&friend_decl.module_name) {
+                    friend_decl.module_id = Some(*friend_mod_id);
+                    friend_modules.insert(*friend_mod_id);
+                }
+                // Skip missing friends to avoid introducing non-determinism
+            }
+            module.friend_modules = friend_modules;
+        }
+    }
+
     for module in env.module_data.iter_mut() {
         for fun_data in module.function_data.values_mut() {
             fun_data.called_funs = Some(

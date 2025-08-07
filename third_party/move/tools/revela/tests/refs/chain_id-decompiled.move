@@ -1,4 +1,5 @@
 module 0x1::chain_id {
+        friend 0x1::genesis;
     struct ChainId has key {
         id: u8,
     }

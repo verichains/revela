@@ -1,4 +1,6 @@
 module 0x1::event {
+        friend 0x1::account;
+        friend 0x1::object;
     struct EventHandle<phantom T0: drop + store> has store {
         counter: u64,
         guid: 0x1::guid::GUID,

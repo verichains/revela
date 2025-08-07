@@ -1,4 +1,5 @@
 module 0x1::chain_status {
+        friend 0x1::genesis;
     struct GenesisEndMarker has key {
         dummy_field: bool,
     }

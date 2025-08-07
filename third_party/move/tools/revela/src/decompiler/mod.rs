@@ -42,7 +42,7 @@ use self::naming::Naming;
 
 pub struct Decompiler<'a> {
     env: GlobalEnv,
-    binaries: Vec<BinaryIndexedView<'a>>,
+    pub binaries: Vec<BinaryIndexedView<'a>>,
     optimizer_settings: OptimizerSettings,
 }
 
@@ -452,6 +452,34 @@ impl<'a> Decompiler<'a> {
             let naming = naming.with_type_display(|t, naming| {
                 self.inline_decompile_type(&module, t, naming).unwrap()
             });
+
+            if let Some(friend_decls) = binary.friend_decls() {
+                for friend_handle in friend_decls {
+                    let friend_address = binary.address_identifier_at(friend_handle.address);
+                    let friend_name = binary.identifier_at(friend_handle.name);
+                    
+                    let friend_address_str = format!("{}", friend_address);
+                    let formatted_address = if friend_address_str.len() > 10 && friend_address_str.starts_with("0x") {
+                        let addr_bytes = &friend_address_str[2..];
+                        if addr_bytes.len() == 64 {
+                            let trimmed = addr_bytes.trim_start_matches('0');
+                            if trimmed.is_empty() {
+                                "0x0".to_string()
+                            } else {
+                                format!("0x{}", trimmed)
+                            }
+                        } else {
+                            friend_address_str.to_string()
+                        }
+                    } else {
+                        friend_address_str.to_string()
+                    };
+                    
+                    let mut friend_unit = SourceCodeUnit::new(1);
+                    friend_unit.add_line(format!("    friend {}::{};", formatted_address, friend_name));
+                    result.add_block(friend_unit);
+                }
+            }
 
             if let Some(defs) = binary.struct_defs() {
                 for idx in 0..defs.len() {

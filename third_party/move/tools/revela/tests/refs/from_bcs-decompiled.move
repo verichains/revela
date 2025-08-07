@@ -1,4 +1,6 @@
 module 0x1::from_bcs {
+        friend 0x1::any;
+        friend 0x1::copyable_any;
     native public(friend) fun from_bytes<T0>(arg0: vector<u8>) : T0;
     public fun to_address(arg0: vector<u8>) : address {
         from_bytes<address>(arg0)

@@ -1,4 +1,11 @@
 module 0x1::reconfiguration {
+        friend 0x1::aptos_governance;
+        friend 0x1::block;
+        friend 0x1::consensus_config;
+        friend 0x1::execution_config;
+        friend 0x1::gas_schedule;
+        friend 0x1::genesis;
+        friend 0x1::version;
     struct Configuration has key {
         epoch: u64,
         last_reconfiguration_time: u64,
